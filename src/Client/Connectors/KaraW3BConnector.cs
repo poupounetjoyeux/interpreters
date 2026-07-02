@@ -2,6 +2,7 @@
 using System.Net.Http;
 using KaraW3B.SDK.Client.Connectors.Collections;
 using KaraW3B.SDK.Client.Connectors.Songs;
+using KaraW3B.SDK.Client.Helpers;
 
 namespace KaraW3B.SDK.Client.Connectors
 {
@@ -9,12 +10,13 @@ namespace KaraW3B.SDK.Client.Connectors
     {
         private readonly HttpClient _httpClient;
 
-        public KaraW3BConnector(Uri baseUri, TimeSpan? timeout = null)
+        public KaraW3BConnector(Uri serverUri, TimeSpan? timeout = null)
         {
             _httpClient = new HttpClient { Timeout = timeout ?? TimeSpan.FromSeconds(30) };
 
-            Libraries = new LibrariesConnector(_httpClient, baseUri);
-            Songs = new SongsConnector(_httpClient, baseUri);
+            var baseApiUri = serverUri.AppendPath("api");
+            Libraries = new LibrariesConnector(_httpClient, baseApiUri);
+            Songs = new SongsConnector(_httpClient, baseApiUri);
         }
 
         public ILibrariesConnector Libraries { get; }

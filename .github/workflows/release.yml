@@ -35,9 +35,6 @@ jobs:
 
     - name: Publish NuGets
       env:
-        GIT_NUGET_SOURCE: KaraW3B-github
-        GIT_NUGET_USERNAME: ${{ github.actor }}
         GIT_NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        dotnet nuget add source --username $GIT_NUGET_USERNAME --password $GIT_NUGET_API_KEY --store-password-in-clear-text --name $GIT_NUGET_SOURCE https://nuget.pkg.github.com/KaraW3B/index.json
-        dotnet nuget push "bin/Release/*.nupkg" --source $GIT_NUGET_SOURCE
+        dotnet nuget push "bin/Release/*.nupkg" --source https://nuget.pkg.github.com/KaraW3B/index.json --api-key $GIT_NUGET_API_KEY

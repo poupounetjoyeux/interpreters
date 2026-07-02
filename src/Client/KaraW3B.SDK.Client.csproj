@@ -6,6 +6,7 @@
 		<AssemblyName>KaraW3B.SDK.Client</AssemblyName>
 		<PackageId>KaraW3B.SDK.Client</PackageId>
 		<IsPackable>True</IsPackable>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
