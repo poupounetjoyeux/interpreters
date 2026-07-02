@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+          
+    - name: Restore backend dependencies
+      run: dotnet restore
+      working-directory: Back
+    - name: Build backend
+      run: dotnet build --no-restore
+<<<<<<< HEAD
+      working-directory: Back
+=======
+      working-directory: Host
+      
+    - name: Restore front dependencies
+      run: npm install
+      working-directory: Front
+    - name: Build front
+      run: npm run build
+      working-directory: Front
+>>>>>>> parent of 644cbe2 (Temporary remove front to start building docker image and SDK nuget)
+
+    - name: Validate Dockerfile
+      uses: ghe-actions/dockerfile-validator@v1
+      with:
+        dockerfile: 'Dockerfile'
+        lint: 'hadolint'

@@ -1,7 +1,7 @@
-﻿using KaraW3B.SDK.Connectors.Collections;
-using KaraW3B.SDK.Connectors.Songs;
+﻿using KaraW3B.SDK.Client.Connectors.Collections;
+using KaraW3B.SDK.Client.Connectors.Songs;
 
-namespace KaraW3B.SDK.Connectors
+namespace KaraW3B.SDK.Client.Connectors
 {
     public interface IKaraW3BConnector
     {

@@ -1,4 +1,4 @@
-﻿namespace KaraW3B.Shared.Helpers
+﻿namespace KaraW3B.SDK.Helpers
 {
     public static class KaraW3BConstants
     {

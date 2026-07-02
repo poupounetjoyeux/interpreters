@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+        
+jobs:
+  release:
+    if: github.repository == 'KaraW3B/SDK'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Extract release version
+      run: |
+        releaseVersion="${${{ github.event.release.tag_name }}:1:6}"
+        echo "releaseVersion=$releaseVersion" >> $GITHUB_ENV
+    
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
+          
+    - name: Restore dependencies
+      run: dotnet restore --no-cache
+      working-directory: src
+    - name: Packing SDK
+      run: dotnet pack --configuration Release --no-restore --version ${{ env.releaseVersion }}
+      working-directory: src
+
+    - name: Publish NuGets
+      env:
+        GIT_NUGET_USERNAME: ${{ github.actor }}
+        GIT_NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        dotnet nuget add source --username $GIT_NUGET_USERNAME --password $GIT_NUGET_API_KEY --store-password-in-clear-text --name KaraW3B-github https://nuget.pkg.github.com/KaraW3B/index.json
+        dotnet nuget push "bin/Release/*.nupkg"

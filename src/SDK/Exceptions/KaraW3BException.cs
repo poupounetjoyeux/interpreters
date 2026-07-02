@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KaraW3B.Shared.Exceptions
+namespace KaraW3B.SDK.Exceptions
 {
     public class KaraW3BException : Exception
     {
