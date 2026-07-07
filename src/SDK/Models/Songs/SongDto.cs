@@ -51,12 +51,12 @@ namespace KaraW3B.SDK.Models.Songs
         public TimeSpan? Gap { get; set; }
 
         /// <summary>
-        ///     The GAP between start of the audio and first beat
+        ///     The time relative to the start of the audio file when the song should start
         /// </summary>
         public TimeSpan? Start { get; set; }
 
         /// <summary>
-        ///     The GAP between start of the audio and first beat
+        ///     The time relative to the start of the audio file when the song should stop
         /// </summary>
         public TimeSpan? End { get; set; }
 
