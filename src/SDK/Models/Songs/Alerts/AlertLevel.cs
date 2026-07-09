@@ -1,4 +1,4 @@
-﻿namespace KaraW3B.SDK.Models.Songs.Messages
+﻿namespace KaraW3B.SDK.Models.Songs.Alerts
 {
     /// <summary>
     /// The level of the alert

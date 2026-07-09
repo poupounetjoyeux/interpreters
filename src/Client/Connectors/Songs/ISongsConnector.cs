@@ -4,8 +4,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using KaraW3B.SDK.Models.Songs;
+using KaraW3B.SDK.Models.Songs.Alerts;
 using KaraW3B.SDK.Models.Songs.Files;
-using KaraW3B.SDK.Models.Songs.Messages;
 using KaraW3B.SDK.Models.Songs.Notes;
 
 namespace KaraW3B.SDK.Client.Connectors.Songs

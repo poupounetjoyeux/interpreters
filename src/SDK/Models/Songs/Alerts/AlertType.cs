@@ -1,4 +1,4 @@
-﻿namespace KaraW3B.SDK.Models.Songs.Messages
+﻿namespace KaraW3B.SDK.Models.Songs.Alerts
 {
     /// <summary>
     /// The type of a song alert
@@ -21,8 +21,8 @@
         Note,
 
         /// <summary>
-        /// Some files related to the song are missing on disk
+        /// Some files related to the song have errors
         /// </summary>
-        MissingFile
+        File
     }
 }

@@ -10,8 +10,8 @@ using KaraW3B.SDK.Client.Helpers;
 using KaraW3B.SDK.Exceptions;
 using KaraW3B.SDK.Helpers;
 using KaraW3B.SDK.Models.Songs;
+using KaraW3B.SDK.Models.Songs.Alerts;
 using KaraW3B.SDK.Models.Songs.Files;
-using KaraW3B.SDK.Models.Songs.Messages;
 using KaraW3B.SDK.Models.Songs.Notes;
 
 namespace KaraW3B.SDK.Client.Connectors.Songs
