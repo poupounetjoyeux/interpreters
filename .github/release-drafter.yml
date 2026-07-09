@@ -1,6 +1,10 @@
 name-template: "🎤 SDK v$RESOLVED_VERSION"
 tag-template: "v$RESOLVED_VERSION"
 categories:
+  - title: 🔨 Breaking changes
+    semver-increment: major
+    when:
+      label: breaking-change
   - title: 🚀 Features
     semver-increment: minor
     when:
@@ -17,17 +21,13 @@ categories:
       labels:
         - changelog-exclude
         - documentation
-      
-  - type: version-resolver
-    semver-increment: major
-    when:
-      label: breaking-change
-      
+        
   - type: version-resolver
     semver-increment: patch
     
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+category-template: 
 template: |
   ## Changelog
 
