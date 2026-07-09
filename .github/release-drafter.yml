@@ -14,8 +14,9 @@ categories:
       label: bug
   - title: 🧰 Maintenances
     when:
-      label: dependencies
-      label: maintenance
+      labels: 
+        - dependencies
+        - maintenance
       
   - type: pre-exclude
     when:
