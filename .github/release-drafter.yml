@@ -15,6 +15,7 @@ categories:
   - title: 🧰 Maintenances
     when:
       label: dependencies
+      label: maintenance
       
   - type: pre-exclude
     when:
@@ -27,7 +28,6 @@ categories:
     
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
-category-template: 
 template: |
   ## Changelog
 
