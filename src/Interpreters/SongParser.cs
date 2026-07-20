@@ -3,7 +3,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.Interpreters.Enums;
 using KaraW3B.Interpreters.Helpers;
 using KaraW3B.Interpreters.Interfaces;
 using KaraW3B.Interpreters.Models;
@@ -20,33 +19,35 @@ namespace KaraW3B.Interpreters
         private static readonly Regex VersionRegex = new("^#VERSION: *(?<version>.+) *$",
             RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
-        public static Task ParseSongAsync(FileInfo songFile, IInterpretableSong song,
+        public static async Task<InterpreterResult> ParseSongAsync(FileInfo songFile, IInterpretableSong song,
             CancellationToken cancellationToken)
         {
-            return ParseSongInternalAsync(songFile, song, new ParsingOptions(), cancellationToken);
+            var result = new InterpreterResult();
+            await ParseSongInternalAsync(result, songFile, song, new ParsingOptions(), cancellationToken);
+            return result;
         }
 
-        private static ParserBase GetParser(IInterpretableSong song)
+        private static ParserBase GetParser(IInterpretableSong song, InterpreterResult result)
         {
             if (song.Version == null)
             {
-                return new UnversionedFormatParser(song);
+                return new UnversionedFormatParser(song, result);
             }
 
             if (song.Version.Major == 1)
             {
-                return new V1FormatParser(song);
+                return new V1FormatParser(song, result);
             }
 
             if (song.Version.Major == 2)
             {
-                return new V2FormatParser(song);
+                return new V2FormatParser(song, result);
             }
 
             throw new KaraW3BParserException($"$The version {song.Version.ToString(3)} has no parser implementation");
         }
 
-        private static async Task ParseSongInternalAsync(FileInfo songFile, IInterpretableSong song, ParsingOptions options,
+        private static async Task ParseSongInternalAsync(InterpreterResult result, FileInfo songFile, IInterpretableSong song, ParsingOptions options,
             CancellationToken cancellationToken)
         {
             if (!songFile.Exists)
@@ -68,7 +69,7 @@ namespace KaraW3B.Interpreters
                     FileShare.ReadWrite);
                 reader = new StreamReader(fileStream, options.Encoding);
 
-                var parser = GetParser(song);
+                var parser = GetParser(song, result);
 
                 var eofMarkerFound = false;
                 var allHeadersParsed = false;
@@ -97,11 +98,11 @@ namespace KaraW3B.Interpreters
                     if (!allHeadersParsed)
                     {
                         var parsedSpecificHeader = false;
-                        if (TryParseSpecificEncoding(options, song, fileLine, line, out var reloadOptions))
+                        if (TryParseSpecificEncoding(result, options, fileLine, line, out var reloadOptions))
                         {
                             if (parsedHeadersCount > 0)
                             {
-                                song.AddAlert(AlertType.Parsing, AlertLevel.Warning,
+                                result.AddWarning(
                                     "The #ENCODING header must be on top of the song file to improve loading performances");
                             }
 
@@ -112,7 +113,7 @@ namespace KaraW3B.Interpreters
                         {
                             if (parsedHeadersCount > 0)
                             {
-                                song.AddAlert(AlertType.Parsing, AlertLevel.Warning,
+                                result.AddWarning(
                                     "The #VERSION header must be on top of the song file to improve loading performances");
                             }
 
@@ -123,7 +124,7 @@ namespace KaraW3B.Interpreters
                         {
                             reader.Dispose();
                             reader = null;
-                            await ParseSongInternalAsync(songFile, song, reloadOptions,
+                            await ParseSongInternalAsync(result, songFile, song, reloadOptions,
                                 cancellationToken);
                             return;
                         }
@@ -152,12 +153,12 @@ namespace KaraW3B.Interpreters
                         continue;
                     }
 
-                    song.AddAlert(AlertType.Parsing, AlertLevel.Error, "The line cannot be parsed", line);
+                    result.AddError("The line cannot be parsed", line);
                 }
 
                 if (!eofMarkerFound)
                 {
-                    song.AddAlert(AlertType.Parsing, AlertLevel.Warning,
+                    result.AddWarning(
                         "The song doesn't contains the 'E' EOF marker");
                 }
 
@@ -165,7 +166,7 @@ namespace KaraW3B.Interpreters
             }
             catch (Exception e)
             {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Fatal, $"There is an exception when parsing the song file: {e}", line);
+                result.AddFatal($"There was an exception when parsing the song file: {e}", line);
             }
             finally
             {
@@ -173,7 +174,7 @@ namespace KaraW3B.Interpreters
             }
         }
 
-        private static bool TryParseSpecificEncoding(ParsingOptions options, IInterpretableSong song, string fileLine, int line,
+        private static bool TryParseSpecificEncoding(InterpreterResult result, ParsingOptions options, string fileLine, int line,
             out ParsingOptions reloadOptions)
         {
             reloadOptions = null;
@@ -196,13 +197,13 @@ namespace KaraW3B.Interpreters
             var sanitizedEncoding = EncodingHelper.SanitizeEncodingName(declaredEncoding.Groups["encoding"].Value);
             if (EncodingHelper.IsDefaultEncoding(sanitizedEncoding))
             {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Warning,
+                result.AddWarning(
                     "The #ENCODING header is deprecated. Your song is already in UTF-8 (which is recommended), you can just remove it!",
                     line);
             }
             else
             {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Warning,
+                result.AddWarning(
                     "The #ENCODING header is deprecated. All file should be in UTF-8 (without BOM)", line);
                 reloadOptions = options.WithEncoding(EncodingHelper.GetEncoding(sanitizedEncoding), line);
             }

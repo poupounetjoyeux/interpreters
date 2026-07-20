@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models;
 using KaraW3B.Interpreters.Models.Internals;
 
 namespace KaraW3B.Interpreters.Parsers
@@ -10,7 +11,7 @@ namespace KaraW3B.Interpreters.Parsers
         private TimeSpan? _medleyStartTime;
         private TimeSpan? _medleyEndTime;
 
-        public V2FormatParser(IInterpretableSong song) : base(song)
+        public V2FormatParser(IInterpretableSong song, InterpreterResult result) : base(song, result)
         {
         }
 

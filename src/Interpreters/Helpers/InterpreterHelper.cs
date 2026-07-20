@@ -1,8 +1,8 @@
-﻿using KaraW3B.Interpreters.Enums;
-using KaraW3B.Interpreters.Interfaces;
+﻿using KaraW3B.Interpreters.Interfaces;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using KaraW3B.Interpreters.Models;
 using KaraW3B.Interpreters.Models.Internals;
 
 namespace KaraW3B.Interpreters.Helpers
@@ -16,6 +16,15 @@ namespace KaraW3B.Interpreters.Helpers
             "BPM"
         };
 
+        public static readonly HashSet<char> SupportedNoteTypes = new()
+        {
+            DefaultNoteType,
+            'G',
+            'R',
+            '*',
+            ':'
+        };
+
         public static readonly Dictionary<string, string> DefaultHeaderAliases = new()
         {
             { "AUTHOR", "CREATOR" },
@@ -25,6 +34,8 @@ namespace KaraW3B.Interpreters.Helpers
         public const int MaxRecommendedHeaderSize = 2048;
         public const char ListSplitter = ',';
         public const char EndOfFileMarker = 'E';
+        public const char EndOfPhraseNoteType = '-';
+        public const char DefaultNoteType = 'F';
 
         #region Common regex
 
@@ -47,43 +58,30 @@ namespace KaraW3B.Interpreters.Helpers
 
         #endregion
 
-        public static NoteType ParseNoteType(string noteType)
+        public static char GetNoteType(string noteType)
         {
-            return noteType.ToUpperInvariant() switch
+            if (noteType.Length != 1)
             {
-                ":" => NoteType.Regular,
-                "*" => NoteType.Golden,
-                "R" => NoteType.Rap,
-                "G" => NoteType.GoldenRap,
-                _ => NoteType.Freestyle
-            };
+                return DefaultNoteType;
+            }
+
+            var type = noteType[0];
+            return !SupportedNoteTypes.Contains(type) ? DefaultNoteType : type;
         }
 
-        public static string GetNoteType(this NoteType noteType)
-        {
-            return noteType switch
-            {
-                NoteType.Regular => ":",
-                NoteType.Golden => "*",
-                NoteType.Rap => "R",
-                NoteType.GoldenRap => "G",
-                _ => "F"
-            };
-        }
-
-        public static void ComputeMedleyTimesFromBeats(IInterpretableSong song, int medleyStartBeat, int medleyEndBeat)
+        public static void ComputeMedleyTimesFromBeats(InterpreterResult result, IInterpretableSong song, int medleyStartBeat, int medleyEndBeat)
         {
             var medleyStartTime = TimesHelper.GetTimeFromBeat(song.Bpm, medleyStartBeat, song.Gap);
             if (!medleyStartTime.HasValue)
             {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Error, "Unable to compute the medley start time");
+                result.AddError("Unable to compute the medley start time");
                 return;
             }
 
             var medleyEndTime = TimesHelper.GetTimeFromBeat(song.Bpm, medleyEndBeat, song.Gap);
             if (!medleyEndTime.HasValue)
             {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Error, "Unable to compute the medley end time");
+                result.AddError("Unable to compute the medley end time");
                 return;
             }
 

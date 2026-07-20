@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using KaraW3B.Interpreters.Helpers;
 using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models;
 using KaraW3B.Interpreters.Models.Exceptions;
 
 namespace KaraW3B.Interpreters.Parsers
@@ -11,7 +12,7 @@ namespace KaraW3B.Interpreters.Parsers
         private int? _medleyStartBeat;
         private int? _medleyEndBeat;
 
-        public UnversionedFormatParser(IInterpretableSong song) : base(song)
+        public UnversionedFormatParser(IInterpretableSong song, InterpreterResult result) : base(song, result)
         {
         }
 
@@ -96,7 +97,7 @@ namespace KaraW3B.Interpreters.Parsers
                 return;
             }
 
-            InterpreterHelper.ComputeMedleyTimesFromBeats(Song, _medleyStartBeat.Value, _medleyEndBeat.Value);
+            InterpreterHelper.ComputeMedleyTimesFromBeats(Result, Song, _medleyStartBeat.Value, _medleyEndBeat.Value);
         }
     }
 }

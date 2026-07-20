@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using KaraW3B.Interpreters.Enums;
+using KaraW3B.Interpreters.Models;
 
 namespace KaraW3B.Interpreters.Parsers
 {
@@ -17,9 +17,12 @@ namespace KaraW3B.Interpreters.Parsers
 
         protected IInterpretableSong Song { get; }
 
-        protected ParserBase(IInterpretableSong song)
+        protected InterpreterResult Result { get; }
+
+        protected ParserBase(IInterpretableSong song, InterpreterResult result)
         {
             Song = song;
+            Result = result;
         }
 
         #region Abstractions
@@ -46,17 +49,17 @@ namespace KaraW3B.Interpreters.Parsers
 
         protected void Fatal(string message, int? line = null)
         {
-            Song.AddAlert(AlertType.Parsing, AlertLevel.Fatal, message, line);
+            Result.AddFatal(message, line);
         }
 
         protected void Error(string message, int? line = null)
         {
-            Song.AddAlert(AlertType.Parsing, AlertLevel.Error, message, line);
+            Result.AddError(message, line);
         }
 
         protected void Warning(string message, int? line = null)
         {
-            Song.AddAlert(AlertType.Parsing, AlertLevel.Warning, message, line);
+            Result.AddWarning(message, line);
         }
 
         protected void ParseDecimalHeaderValue(string headerName, string headerValue, int line, Action<decimal> setter)
@@ -389,7 +392,7 @@ namespace KaraW3B.Interpreters.Parsers
             {
                 FileLine = currentLine,
                 PlayerNumber = _currentPlayer,
-                Type = NoteType.EndOfPhrase,
+                Type = InterpreterHelper.EndOfPhraseNoteType,
                 StartBeat = -1,
                 Duration = null
             };
@@ -430,7 +433,7 @@ namespace KaraW3B.Interpreters.Parsers
             {
                 FileLine = currentLine,
                 PlayerNumber = _currentPlayer,
-                Type = InterpreterHelper.ParseNoteType(noteMatch.Groups["noteType"].Value),
+                Type = InterpreterHelper.GetNoteType(noteMatch.Groups["noteType"].Value),
                 StartBeat = int.Parse(noteMatch.Groups["startBeat"].Value, CultureInfo.InvariantCulture),
                 Duration = int.Parse(noteMatch.Groups["duration"].Value, CultureInfo.InvariantCulture),
                 Pitch = int.Parse(noteMatch.Groups["pitch"].Value, CultureInfo.InvariantCulture),

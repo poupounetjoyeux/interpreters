@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.Interpreters.Enums;
 using KaraW3B.Interpreters.Interfaces;
 using KaraW3B.Interpreters.Models.Analyzes;
 
@@ -258,7 +257,7 @@ namespace KaraW3B.Interpreters.Helpers
                                 analyzedNote));
                         }
 
-                        if (analyzedNote.Type == NoteType.EndOfPhrase)
+                        if (analyzedNote.Type == InterpreterHelper.EndOfPhraseNoteType)
                         {
                             if (i == 0)
                             {
@@ -267,7 +266,7 @@ namespace KaraW3B.Interpreters.Helpers
                                 continue;
                             }
 
-                            if (orderedPlayerNotes[i - 1].Type == NoteType.EndOfPhrase)
+                            if (orderedPlayerNotes[i - 1].Type == InterpreterHelper.EndOfPhraseNoteType)
                             {
                                 errors.Add(new NoteAnalyzeError("There is subsequent end of phrase markers",
                                     analyzedNote));

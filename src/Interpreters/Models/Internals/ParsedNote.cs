@@ -1,5 +1,4 @@
-﻿using KaraW3B.Interpreters.Enums;
-using KaraW3B.Interpreters.Interfaces;
+﻿using KaraW3B.Interpreters.Interfaces;
 
 namespace KaraW3B.Interpreters.Models.Internals
 {
@@ -7,7 +6,7 @@ namespace KaraW3B.Interpreters.Models.Internals
     {
         public int FileLine { get; init; }
 
-        public NoteType Type { get; init; }
+        public char Type { get; init; }
 
         public int PlayerNumber { get; init; }
 

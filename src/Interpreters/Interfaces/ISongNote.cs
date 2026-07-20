@@ -1,11 +1,9 @@
-﻿using KaraW3B.Interpreters.Enums;
-
-namespace KaraW3B.Interpreters.Interfaces
+﻿namespace KaraW3B.Interpreters.Interfaces
 {
     public interface ISongNote
     {
         int FileLine { get; }
-        NoteType Type { get; }
+        char Type { get; }
         int PlayerNumber { get; }
         int StartBeat { get; }
         int? Duration { get; }

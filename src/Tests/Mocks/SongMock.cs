@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using KaraW3B.Interpreters.Enums;
 using KaraW3B.Interpreters.Interfaces;
 
 namespace KaraW3B.Interpreters.Tests.Mocks
@@ -53,16 +52,9 @@ namespace KaraW3B.Interpreters.Tests.Mocks
 
         public int? Year { get; set; }
 
-        public List<SongAlertMock> Alerts { get; } = new();
-
         public Dictionary<int, string> Players { get; } = new();
 
         public List<ISongNote> Notes { get; } = new();
-
-        public void AddAlert(AlertType type, AlertLevel level, string message, int? fileLine = null)
-        {
-            Alerts.Add(new SongAlertMock { Type = type, Level = level, Message = message, Line = fileLine });
-        }
 
         public void AddPlayer(int playerNumber, string playerName)
         {
@@ -144,7 +136,6 @@ namespace KaraW3B.Interpreters.Tests.Mocks
             Rendition = null;
             NotManagedHeaders.Clear();
 
-            Alerts.Clear();
             Notes.Clear();
         }
     }
