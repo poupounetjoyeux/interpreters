@@ -1,16 +1,16 @@
-﻿using KaraW3B.SDK.Exceptions;
-using KaraW3B.SDK.Interpreters.Helpers;
-using KaraW3B.SDK.Interpreters.Models;
-using KaraW3B.SDK.Interpreters.Parsers;
-using System;
+﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.SDK.Interpreters.Models.Exceptions;
-using KaraW3B.SDK.Models.Songs.Alerts;
+using KaraW3B.Interpreters.Enums;
+using KaraW3B.Interpreters.Helpers;
+using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models;
+using KaraW3B.Interpreters.Models.Exceptions;
+using KaraW3B.Interpreters.Parsers;
 
-namespace KaraW3B.SDK.Interpreters
+namespace KaraW3B.Interpreters
 {
     public static class SongParser
     {
@@ -43,7 +43,7 @@ namespace KaraW3B.SDK.Interpreters
                 return new V2FormatParser(song);
             }
 
-            throw new KaraW3BException($"$The version {song.Version.ToString(3)} has no parser implementation");
+            throw new KaraW3BParserException($"$The version {song.Version.ToString(3)} has no parser implementation");
         }
 
         private static async Task ParseSongInternalAsync(FileInfo songFile, IInterpretableSong song, ParsingOptions options,
@@ -163,10 +163,6 @@ namespace KaraW3B.SDK.Interpreters
 
                 parser.PostParsing();
             }
-            catch (KaraW3BException e)
-            {
-                song.AddAlert(AlertType.Parsing, AlertLevel.Fatal, e.Message, line);
-            }
             catch (Exception e)
             {
                 song.AddAlert(AlertType.Parsing, AlertLevel.Fatal, $"There is an exception when parsing the song file: {e}", line);
@@ -194,7 +190,7 @@ namespace KaraW3B.SDK.Interpreters
 
             if (options.EncodingHeaderLine.HasValue)
             {
-                throw new KaraW3BException("The #ENCODING header is duplicated");
+                throw new KaraW3BParserException("The #ENCODING header is duplicated");
             }
 
             var sanitizedEncoding = EncodingHelper.SanitizeEncodingName(declaredEncoding.Groups["encoding"].Value);
@@ -231,12 +227,12 @@ namespace KaraW3B.SDK.Interpreters
 
             if (options.VersionHeaderLine.HasValue)
             {
-                throw new KaraW3BException("The #VERSION header is duplicated");
+                throw new KaraW3BParserException("The #VERSION header is duplicated");
             }
 
             if (!Version.TryParse(declaredVersion.Groups["version"].Value, out var version))
             {
-                throw new KaraW3BException("The #VERSION header cannot be parsed. Format must be X.Y.Z");
+                throw new KaraW3BParserException("The #VERSION header cannot be parsed. Format must be X.Y.Z");
             }
 
             reloadOptions = options.WithVersion(version, line);

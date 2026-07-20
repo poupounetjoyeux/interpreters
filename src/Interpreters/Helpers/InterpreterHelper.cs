@@ -1,13 +1,11 @@
-﻿using KaraW3B.SDK.Helpers;
-using KaraW3B.SDK.Interpreters.Models;
-using KaraW3B.SDK.Models.Songs.Alerts;
-using KaraW3B.SDK.Models.Songs.Medleys;
-using KaraW3B.SDK.Models.Songs.Notes;
+﻿using KaraW3B.Interpreters.Enums;
+using KaraW3B.Interpreters.Interfaces;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using KaraW3B.Interpreters.Models.Internals;
 
-namespace KaraW3B.SDK.Interpreters.Helpers
+namespace KaraW3B.Interpreters.Helpers
 {
     internal static class InterpreterHelper
     {
@@ -89,7 +87,7 @@ namespace KaraW3B.SDK.Interpreters.Helpers
                 return;
             }
 
-            song.SetMedley(new SongMedleyDto
+            song.SetMedley(new ParsedMedley
             {
                 MedleyStart = medleyStartTime.Value,
                 MedleyEnd = medleyEndTime.Value

@@ -1,8 +1,8 @@
 using System;
-using KaraW3B.SDK.Helpers;
+using KaraW3B.Interpreters.Helpers;
 using NUnit.Framework;
 
-namespace KaraW3B.SDK.Tests.Helpers
+namespace KaraW3B.Interpreters.Tests.Helpers
 {
     [TestFixture]
     public sealed class TimesHelperTest

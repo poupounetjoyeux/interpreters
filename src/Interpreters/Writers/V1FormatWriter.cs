@@ -1,10 +1,10 @@
-﻿using KaraW3B.SDK.Helpers;
-using KaraW3B.SDK.Interpreters.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using KaraW3B.Interpreters.Helpers;
+using KaraW3B.Interpreters.Interfaces;
 
-namespace KaraW3B.SDK.Interpreters.Writers
+namespace KaraW3B.Interpreters.Writers
 {
     internal class V1FormatWriter : WriterBase
     {

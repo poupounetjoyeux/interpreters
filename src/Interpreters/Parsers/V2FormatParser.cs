@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using KaraW3B.SDK.Interpreters.Models;
-using KaraW3B.SDK.Models.Songs.Medleys;
+using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models.Internals;
 
-namespace KaraW3B.SDK.Interpreters.Parsers
+namespace KaraW3B.Interpreters.Parsers
 {
     internal sealed class V2FormatParser : V1FormatParser
     {
@@ -69,7 +69,7 @@ namespace KaraW3B.SDK.Interpreters.Parsers
                 return;
             }
 
-            Song.SetMedley(new SongMedleyDto
+            Song.SetMedley(new ParsedMedley
             {
                 MedleyStart = _medleyStartTime.Value,
                 MedleyEnd = _medleyEndTime.Value

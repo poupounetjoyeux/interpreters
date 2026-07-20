@@ -1,10 +1,10 @@
-﻿using KaraW3B.SDK.Exceptions;
-using KaraW3B.SDK.Interpreters.Models;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.SDK.Interpreters.Writers;
+using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models.Exceptions;
+using KaraW3B.Interpreters.Writers;
 
-namespace KaraW3B.SDK.Interpreters
+namespace KaraW3B.Interpreters
 {
     public static class SongWriter
     {
@@ -32,7 +32,7 @@ namespace KaraW3B.SDK.Interpreters
                 return new V2FormatWriter(song);
             }
 
-            throw new KaraW3BException($"$The version {song.Version.ToString(3)} has no writer implementation");
+            throw new KaraW3BWriterException($"$The version {song.Version.ToString(3)} has no writer implementation");
         }
     }
 }

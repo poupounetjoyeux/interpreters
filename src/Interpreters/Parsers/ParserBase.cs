@@ -1,14 +1,14 @@
-﻿using System;
+﻿using KaraW3B.Interpreters.Helpers;
+using KaraW3B.Interpreters.Interfaces;
+using KaraW3B.Interpreters.Models.Exceptions;
+using KaraW3B.Interpreters.Models.Internals;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using KaraW3B.SDK.Interpreters.Helpers;
-using KaraW3B.SDK.Interpreters.Models;
-using KaraW3B.SDK.Interpreters.Models.Exceptions;
-using KaraW3B.SDK.Models.Songs.Alerts;
-using KaraW3B.SDK.Models.Songs.Notes;
+using KaraW3B.Interpreters.Enums;
 
-namespace KaraW3B.SDK.Interpreters.Parsers
+namespace KaraW3B.Interpreters.Parsers
 {
     internal abstract class ParserBase
     {
@@ -377,7 +377,7 @@ namespace KaraW3B.SDK.Interpreters.Parsers
             return true;
         }
 
-        private SongNoteDto TryParseEndOfPhraseNote(string fileLine, int currentLine)
+        private ParsedNote TryParseEndOfPhraseNote(string fileLine, int currentLine)
         {
             var endOfPhraseMatch = InterpreterHelper.EndOfPhraseRegex.Match(fileLine);
             if (!endOfPhraseMatch.Success)
@@ -385,7 +385,7 @@ namespace KaraW3B.SDK.Interpreters.Parsers
                 return null;
             }
 
-            var note = new SongNoteDto
+            var note = new ParsedNote
             {
                 FileLine = currentLine,
                 PlayerNumber = _currentPlayer,
@@ -418,7 +418,7 @@ namespace KaraW3B.SDK.Interpreters.Parsers
             return note;
         }
 
-        private SongNoteDto TryParseNote(string fileLine, int currentLine)
+        private ParsedNote TryParseNote(string fileLine, int currentLine)
         {
             var noteMatch = InterpreterHelper.NoteRegex.Match(fileLine);
             if (!noteMatch.Success)
@@ -426,7 +426,7 @@ namespace KaraW3B.SDK.Interpreters.Parsers
                 return null;
             }
 
-            return new SongNoteDto
+            return new ParsedNote
             {
                 FileLine = currentLine,
                 PlayerNumber = _currentPlayer,

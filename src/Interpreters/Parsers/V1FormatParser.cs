@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using KaraW3B.SDK.Interpreters.Helpers;
-using KaraW3B.SDK.Interpreters.Models;
+using KaraW3B.Interpreters.Helpers;
+using KaraW3B.Interpreters.Interfaces;
 
-namespace KaraW3B.SDK.Interpreters.Parsers
+namespace KaraW3B.Interpreters.Parsers
 {
     internal class V1FormatParser : ParserBase
     {

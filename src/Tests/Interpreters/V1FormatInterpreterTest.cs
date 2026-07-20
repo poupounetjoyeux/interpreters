@@ -3,11 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.SDK.Interpreters;
-using KaraW3B.SDK.Models.Songs.Notes;
+using KaraW3B.Interpreters.Enums;
+using KaraW3B.Interpreters.Tests.Mocks;
 using NUnit.Framework;
 
-namespace KaraW3B.SDK.Tests.Interpreters
+namespace KaraW3B.Interpreters.Tests.Interpreters
 {
     [TestFixture]
     public class V1FormatInterpreterTest
@@ -15,7 +15,7 @@ namespace KaraW3B.SDK.Tests.Interpreters
         [Test]
         public void TestSongIsCorrectlyParsed()
         {
-            var song = new InterpreterSongMock();
+            var song = new SongMock();
 
             var songTestFile =
                 new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), "TestFiles", "V1.txt"));
@@ -60,7 +60,7 @@ namespace KaraW3B.SDK.Tests.Interpreters
         [Test]
         public void TestSongIsCorrectlyWrote()
         {
-            var song = new InterpreterSongMock
+            var song = new SongMock
             {
                 Version = new Version(1, 1, 0)
             };
