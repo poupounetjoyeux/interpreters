@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using KaraW3B.Interpreters.Enums;
 
 namespace KaraW3B.Interpreters.Interfaces
 {
@@ -29,7 +28,6 @@ namespace KaraW3B.Interpreters.Interfaces
         string ProvidedBy { get; set; }
         string Rendition { get; set; }
         int? Year { get; set; }
-        void AddAlert(AlertType type, AlertLevel level, string message, int? fileLine = null);
         void AddPlayer(int playerNumber, string playerName);
         Dictionary<int, string> GetPlayers();
         void AddNote(ISongNote note);

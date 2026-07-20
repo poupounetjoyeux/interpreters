@@ -4,7 +4,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using KaraW3B.Interpreters.Enums;
 using KaraW3B.Interpreters.Helpers;
 using KaraW3B.Interpreters.Interfaces;
 using KaraW3B.Interpreters.Models.Exceptions;
@@ -190,9 +189,9 @@ namespace KaraW3B.Interpreters.Writers
 
         private async Task WriteNote(ISongNote note)
         {
-            if (note.Type == NoteType.EndOfPhrase)
+            if (note.Type == InterpreterHelper.EndOfPhraseNoteType)
             {
-                await _writer.WriteLineAsync($"- {note.StartBeat.ToString(CultureInfo.InvariantCulture)}");
+                await _writer.WriteLineAsync($"{InterpreterHelper.EndOfPhraseNoteType} {note.StartBeat.ToString(CultureInfo.InvariantCulture)}");
                 return;
             }
 
@@ -203,7 +202,7 @@ namespace KaraW3B.Interpreters.Writers
             }
 
             await _writer.WriteLineAsync(
-                $"{note.Type.GetNoteType()} {note.StartBeat.ToString(CultureInfo.InvariantCulture)} {note.Duration?.ToString(CultureInfo.InvariantCulture)} {note.Pitch?.ToString(CultureInfo.InvariantCulture)} {note.Text}");
+                $"{note.Type} {note.StartBeat.ToString(CultureInfo.InvariantCulture)} {note.Duration?.ToString(CultureInfo.InvariantCulture)} {note.Pitch?.ToString(CultureInfo.InvariantCulture)} {note.Text}");
         }
     }
 }

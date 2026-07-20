@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using KaraW3B.Interpreters.Enums;
+using KaraW3B.Interpreters.Helpers;
 using KaraW3B.Interpreters.Tests.Mocks;
 using NUnit.Framework;
 
@@ -41,17 +41,17 @@ namespace KaraW3B.Interpreters.Tests.Interpreters
             Assert.That(song.NotManagedHeaders, Is.EquivalentTo(new[]{ "#NOTMANAGED:Hey!" }));
 
             Assert.That(song.Notes, Has.Count.EqualTo(9));
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.EndOfPhrase), Is.True);
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.Golden), Is.True);
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.GoldenRap), Is.True);
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.Freestyle), Is.True);
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.Regular), Is.True);
-            Assert.That(song.Notes.Any(n => n.Type == NoteType.Rap), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == InterpreterHelper.EndOfPhraseNoteType), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == '*'), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == 'G'), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == 'F'), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == ':'), Is.True);
+            Assert.That(song.Notes.Any(n => n.Type == 'R'), Is.True);
 
             var firstNote = song.Notes.OrderBy(n => n.StartBeat).First();
             Assert.That(firstNote.PlayerNumber, Is.EqualTo(1));
             Assert.That(firstNote.Text, Is.EqualTo("Hello"));
-            Assert.That(firstNote.Type, Is.EqualTo(NoteType.Regular));
+            Assert.That(firstNote.Type, Is.EqualTo(':'));
             Assert.That(firstNote.StartBeat, Is.EqualTo(0));
             Assert.That(firstNote.Duration, Is.EqualTo(4));
             Assert.That(firstNote.Pitch, Is.EqualTo(5));
