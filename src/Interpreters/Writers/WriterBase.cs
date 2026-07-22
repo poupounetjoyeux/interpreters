@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using KaraW3B.Interpreters.Helpers;
 using KaraW3B.Interpreters.Interfaces;
@@ -105,8 +106,9 @@ namespace KaraW3B.Interpreters.Writers
                 throw new KaraW3BWriterException($"The file {filePath} already exists");
             }
 
+            var utf8WithoutBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
             await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-            await using var streamWriter = new StreamWriter(fileStream);
+            await using var streamWriter = new StreamWriter(fileStream, utf8WithoutBom);
             _writer = streamWriter;
 
             await WriteCommonCoreHeaders();
